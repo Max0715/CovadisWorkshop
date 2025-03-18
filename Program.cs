@@ -30,10 +30,12 @@ app.MapGet("/weatherforecast", () =>
         ))
         .ToArray();
     
+        Console.WriteLine("Weather forecast generated")
+
     return new
     {
         Forecast = forecast,
-        Message = "Hello World"
+        
     };
 })
 .WithName("GetWeatherForecast");
