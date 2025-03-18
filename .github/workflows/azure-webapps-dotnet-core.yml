@@ -17,72 +17,119 @@
 # For more information on the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # For more samples to get started with GitHub Action workflows to deploy to Azure: https://github.com/Azure/actions-workflow-samples
 
-name: Build and deploy ASP.Net Core app to an Azure Web App
+name: Build and deploy ASP.Net Core app to build the .NET application.
 
-env:
-  AZURE_WEBAPP_NAME: your-app-name    # set this to the name of your Azure Web App
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '5'                 # set this to the .NET Core version to use
+2. **Update the .NET version**: Verify that the .NET version specified (` to an Azure Web App
 
 on:
   push:
+    branches:
+DOTNET_VERSION: '5'`) is compatible with the installed libraries      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-l. If needed, update to a newer version of .The failure in your GitHub Actions job is due to the errorNET.
+
+### Updated Workflow:
+Below is the updated workflow `No usable version of libssl was found`, which causes the `dotnet build --configuration Release` command with an added step to install `libssl-dev` to fail.
+
+To resolve this issue, you need to:
+
+```yaml
+name: Build and deploy ASP.Net Core app to ensure that the necessary SSL libraries are installed on the runner. You can add a step to install `libssl an Azure Web App
+
+env:
+  AZURE_WEBAPP_NAME: your-app` before running the `dotnet build` command. Here’satest
+
+    steps:
+    - name: Checkout code
+     -name    # set this to the name of your Azure Web App the updated workflow file:
+
+```yaml
+name: Build and
+  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to deploy ASP.Net Core app to an Azure Web App
+
+env the path to your web app project, defaults to the repository:
+  AZURE_WEBAPP_NAME: your-app-name    # set this to root
+  DOTNET_VERSION: '5'                 # set the name of your Azure Web App
+  AZURE_WEBAPP_PACKAGE_PATH: this to the .NET Core version to use
+
+on:
+  push '.'      # set this to the path to your web app:
     branches: [ "main" ]
   workflow_dispatch:
 
-permissions:
+ project, defaults to the repository root
+  DOTNET_VERSION: '5'                 # set this to the .permissions:
   contents: read
+
+jobs:
+  build:
+    runs uses: actions/checkout@v2
+
+    - name: Set up .NET CoreNET Core version to use
+
+on:
+  push:
+    branches:-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout
+      uses: actions/setup-dotnet@v1
+      with:
+ [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents:@v4
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y read
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+           dotnet-version: '5.0.x' # Adjust to your . libssl-dev
 
       - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+        uses steps:
+      - uses: actions/checkout@v4
 
-      - name: Set up dependency caching for faster builds
+      -NET version
+
+    - name: Install libssl
+      run:: actions/setup-dotnet@v4
+        with:
+          dot name: Set up .NET Core
+        uses: actions/setup-dotnet@ sudo apt-get update && sudo apt-get install -y libsslnet-version: ${{ env.DOTNET_VERSION }}
+
+      - namev4
+        with:
+          dotnet-version: ${{: Set up dependency caching for faster builds1.1
+
+    - name: Restore dependencies
+      run: dotnet restore env.DOTNET_VERSION }}
+
+      - name: Install required dependencies
         uses: actions/cache@v3
+
+        run: sudo apt-get update && sudo apt
+
+    - name: Build
+      run: dotnet-get install -y libssl-dev
+
+      - name: Set up dependency build --configuration Release
+
+    - name: Deploy to        with:
+          caching for faster builds
+        uses: Azure Web App
+      uses: azure/webapps-deploy@ actions/cache@v3
         with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
-
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
-
-  deploy:
-    permissions:
-      contents: none
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Development'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: .net-app
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          path: ~/.nuv2
+      with:
+        app-name: ${{ secrets.AZURE_WEBget/packages
+          key: ${{ runner.os }}-nuget-${APP_NAME }}
+        publish-profile: ${{ secrets.A{ hashFiles('**/packages.lock.json') }}
+          restoreZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ${{ github.workspace }}/path/to/your/package
