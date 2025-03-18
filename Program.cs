@@ -29,10 +29,15 @@ app.MapGet("/weatherforecast", () =>
             summaries[Random.Shared.Next(summaries.Length)]
         ))
         .ToArray();
-    return forecast;
+    
+    return new
+    {
+        Forecast = forecast,
+        Message = "Hello World"
+    };
 })
 .WithName("GetWeatherForecast");
-System.Console.WriteLine("Hello World!");
+
 
 app.Run();
 
